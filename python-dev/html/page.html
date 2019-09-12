@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title metal:define-slot="head_title">python tracker</title>
-<link rel="shortcut icon" href="@@file/favicon.ico" />
+<link rel="shortcut icon" href="@@file/images/favicon.ico" />
 <link rel="stylesheet" type="text/css" href="@@file/css/main.css" />
 <link rel="stylesheet" type="text/css" href="@@file/css/style.css" />
 <link rel="search" type="application/opensearchdescription+xml"
@@ -28,7 +28,7 @@ status_all string:-1,1,2,3;
   <!--  Logo  -->
   <h1 id="logoheader">
     <a accesskey="1" href="." id="logolink">
-       <img src="@@file/python-logo.gif"
+       <img src="@@file/images/python-logo.gif"
             alt="homepage" border="0" id="logo" /></a>
   </h1>
 
@@ -68,9 +68,11 @@ status_all string:-1,1,2,3;
     <li><a href="." title="Home">Home</a></li>
     <li><a href="https://www.python.org/" title="Go to the Python Site">Python Site</a></li>
     <li><a href="https://www.python.org/doc/" title="">Documentation</a></li>
-    <li><a href="https://www.python.org/downloads/" title="">Downloads</a></li>
     <li><a href="https://devguide.python.org/" title="Python Developer’s Guide">Developer’s Guide</a></li>
-    <li class="selected"><a href="." class="selected" title="Python Issue Tracker">Issue Tracker</a>
+    <li><a href="https://github.com/python/cpython" title="Source Code">Source Code</a></li>
+    <li><a href="https://www.python.org/downloads/" title="">Downloads</a></li>
+    <li class="selected"><a href="." class="selected" title="Python Issue Tracker">Issue Tracker</a></li>
+    <li><a href="https://github.com/python/cpython/pulls" title="Python Issue Tracker">Pull Requests</a>
       <ul class="level-two">
         <li tal:condition="python:request.user.hasPermission('View', 'issue')">
           <strong i18n:translate="">Issues</strong>
@@ -194,7 +196,7 @@ status_all string:-1,1,2,3;
                        alt="Google" title="Google" /></a>
 	         <a style="display:inline;width:0;margin:0" tal:repeat="prov python:utils.openid_links(request)" tal:attributes="href prov/href">
                   <img hspace="0" vspace="0" width="16" height="16" tal:attributes="src prov/src;title prov/title;alt prov/alt"/></a>
-                <input size="10" name="openid_identifier" style="background:url(@@file/openid-16x16.gif)
+                <input size="10" name="openid_identifier" style="background:url(@@file/images/openid-16x16.gif)
                   center left no-repeat;padding-left:16px"/><br/>
                 <input size="10" type="password" name="__login_password"/><br/>
                 <input type="hidden" name="@action" value="Login"/>
