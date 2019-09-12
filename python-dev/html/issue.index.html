@@ -68,11 +68,11 @@
    </td>
    <td tal:condition="request/show/title" class="haspatch">
      <img tal:condition="python:i.files and 'patch' in list(str(x.name) for x in i.keywords)"
-          src="@@file/patch-icon.png" alt="has patch" title="has patch" />
+          src="@@file/images/patch-icon.png" alt="has patch" title="has patch" />
    </td>
    <td tal:condition="request/show/title" class="haspr">
      <img tal:condition="i/pull_requests" width="16" height="16"
-          src="@@file/gh-icon.png" alt="has PR" title="has PR" />
+          src="@@file/images/gh-icon.png" alt="has PR" title="has PR" />
    </td>
    <td tal:condition="request/show/components"
        tal:content="python:i.components.plain() or default">&nbsp;</td>
