@@ -2,7 +2,7 @@
 
 /* main page styles */
 body.body {
-  font-family: sans-serif, Arial, Helvetica;
+  font-family: "Roboto", sans-serif, Arial, Helvetica;
   background-color: white;
   color: #333;
   margin: 0;
@@ -70,7 +70,7 @@ div#searchbox input#search-text
   background: none;
   width: 11em !important;
   width /**/: 3.2em;
-  font-family: Arial, Verdana, Geneva, "Bitstream Vera Sans", Helvetica, sans-serif;
+  font-family: "Roboto", Arial, Verdana, Geneva, "Bitstream Vera Sans", Helvetica, sans-serif;
   text-transform: none;
 }
 
@@ -85,7 +85,7 @@ div#searchbox input#search-text
   background-image: none;
   width: 10em !important;
   width /**/: 11.4em;
-  font-family: Arial, Verdana, Geneva, "Bitstream Vera Sans", Helvetica, sans-serif;
+  font-family: "Roboto", Arial, Verdana, Geneva, "Bitstream Vera Sans", Helvetica, sans-serif;
   font-size: 95%;
 }
 
@@ -608,7 +608,7 @@ li#menu-shortcuts-help span {
 }
 
 #content-body {
-    font-family: Georgia, "Bitstream Vera Serif", "New York", Palatino, serif;
+    font-family: "Roboto", Georgia, "Bitstream Vera Serif", "New York", Palatino, serif;
     font-size: 11pt;
 }
 
