@@ -1147,6 +1147,10 @@ display:none;
   color:#333;
   display:inline;
 }
+#footer #heading {
+  color: #5E72A5;
+  font-weight: bold;
+}
 #footer #credits {
   position:absolute;
   top:0;
