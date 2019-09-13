@@ -11,6 +11,9 @@
       title="Python issue search" />
 <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+
 <meta http-equiv="Content-Type"
  tal:attributes="content string:text/html;; charset=${request/client/charset}" />
 <script tal:replace="structure request/base_javascript">
@@ -252,13 +255,12 @@ status_all string:-1,1,2,3;
               })"
               i18n:translate="">Easy issues</a>
           </li>
-  
-              <li>
-                <a href="issue?@template=stats">Weekly Statistics</a>
-              </li>
-  
-            </ul>
-      </li>
+          <li>
+            <a href="issue?@template=stats">Weekly Statistics</a>
+          </li>
+
+        </ul>
+    </li>
     <!-- Administration submenu -->
     <li tal:condition="python:request.user.hasPermission('View', 'user')">
       <strong i18n:translate="">Administration</strong>
@@ -277,46 +279,6 @@ status_all string:-1,1,2,3;
             <a href="msg?@sort=-spambayes_score">View Spam</a></li>
       </ul>
     </li>
-
-    <!--- Contribute submenu-->
-    <li>
-        <strong i18n:translate="">Contribute</strong>
-        <ul class="level-three">
-          <li><a href="http://docs.python.org/devguide/triaging.html">
-              Triaging Issues</a></li>
-          <li><a href="http://wiki.python.org/moin/TrackerDevelopment">
-              Tracker Development</a></li>
-          <li><a href="http://psf.upfronthosting.co.za/roundup/meta">
-              Report Tracker Bug</a></li>
-        </ul>
-      </li>
-
-    <!-- Resources submenu-->
-    <li>
-        <strong i18n:translate="">Help</strong>
-        <ul class="level-three">
-          <li><a href="http://docs.python.org/devguide">
-            Developer Guide</a></li>
-          <li><a href="https://docs.python.org">
-            Documentation</a></li>
-          <li><a href="https://www.python.org/downloads/" title="">Downloads</a>
-        </ul>
-    </li>
-
-    <!-- Community submenu -->
-    <li>
-      <strong i18n:translate="">Community</strong>
-      <ul class="level-three">
-        <li><a href="http://python.org">
-            python.org</a></li>
-        <li><a href="https://www.python.org/blogs/">Python News</a></li>
-        <li><a href="https://www.python.org/psf-landing/">
-            PSF Python Software Foundation</a></li>
-        <li><a href="https://www.python.org/psf/codeofconduct/">
-            Code of Conduct</a></li>            
-      </ul>
-    </li>
-
   </ul>
 </div> 
 </div>
@@ -334,16 +296,70 @@ status_all string:-1,1,2,3;
      i18n:translate="">clear this message</a>
  </p>
  <tal:block metal:define-slot="content">Page content goes here</tal:block>
-</div> <!-- content-body -->
-<div id="footer">
-<div id="credits">
-<a href="http://www.python.org/about/website">Website maintained by the Python community</a><br />
+</div> <!-- end of content-body -->
 
-<a href="http://www.upfrontsystems.co.za/" title="issue tracker hosting provided by Upfront Systems, South Africa">hosting by Upfront Systems</a> /
-  <a href="http://roundup.sf.net" title="Powered by the Roundup Issue Tracker">powered by Roundup</a>
-</div> <!-- credits -->
-Copyright &copy; 1990-2019, <a href="http://python.org/psf">Python Software Foundation</a><br />
-<a href="http://python.org/about/legal">Legal Statements</a>
+<div id="footer">
+
+<div class="mdc-layout-grid">
+    <div class="mdc-layout-grid__inner">
+      <div class="mdc-layout-grid__cell">
+        <!--- Contribute submenu-->
+        <li>
+            <strong i18n:translate="">Contribute</strong>
+            <ul class="level-three">
+              <li><a href="http://docs.python.org/devguide/triaging.html">
+                  Triaging Issues</a></li>
+              <li><a href="http://wiki.python.org/moin/TrackerDevelopment">
+                  Tracker Development</a></li>
+              <li><a href="http://psf.upfronthosting.co.za/roundup/meta">
+                  Report Tracker Bug</a></li>
+            </ul>
+        </li>
+      </div>
+      <div class="mdc-layout-grid__cell">
+        <!-- Resources submenu-->
+        <li>
+            <strong i18n:translate="">Help</strong>
+            <ul class="level-three">
+              <li><a href="http://docs.python.org/devguide">
+                Developer Guide</a></li>
+              <li><a href="https://docs.python.org">
+                Documentation</a></li>
+              <li><a href="https://www.python.org/downloads/" title="">Downloads</a>
+            </ul>
+        </li>
+      </div>
+      <div class="mdc-layout-grid__cell">
+        <!-- Community submenu -->
+        <li>
+            <strong i18n:translate="">Community</strong>
+            <ul class="level-three">
+              <li><a href="http://python.org">
+                  python.org</a></li>
+              <li><a href="https://www.python.org/blogs/">Python News</a></li>
+              <li><a href="https://www.python.org/psf-landing/">
+                  PSF Python Software Foundation</a></li>
+              <li><a href="https://www.python.org/psf/codeofconduct/">
+                  Code of Conduct</a></li>            
+            </ul>
+          </li>
+      </div>
+    </div>
+    
+    <div class="mdc-layout-grid">
+        <div class="mdc-layout-grid__inner">
+          <div class="mdc-layout-grid__cell">
+              Copyright &copy; 1990-2019, <a href="http://python.org/psf">Python Software Foundation</a><br />
+              <a href="http://python.org/about/legal">Legal Statements</a>
+          </div>
+          <div class="mdc-layout-grid__cell">
+            <a href="http://www.python.org/about/website">Website maintained by the Python community</a><br />
+            <a href="http://www.upfrontsystems.co.za/" title="issue tracker hosting provided by Upfront Systems, South Africa">hosting by Upfront Systems</a><br />
+            <a href="http://roundup.sf.net" title="Powered by the Roundup Issue Tracker">powered by Roundup</a>
+          </div>
+
+        </div>
+    </div>
 
 </div> <!-- footer -->
 </div> <!-- body-main -->
