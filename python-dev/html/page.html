@@ -15,8 +15,9 @@
 <script tal:replace="structure request/base_javascript">
 </script>
 <metal:x define-slot="more-javascript" />
-
 </head>
+
+
 <body
 tal:define="
 kw_create python:request.user.hasPermission('Create', 'keyword');
@@ -25,15 +26,16 @@ columns_showall string:id,activity,title,creator,assignee,status,type;
 status_notresolved string:-1,1,3;
 status_all string:-1,1,2,3;
 ">
-  <!--  Logo  -->
-  <h1 id="logoheader">
-    <a accesskey="1" href="." id="logolink">
-       <img src="@@file/images/python-logo.gif"
-            alt="homepage" border="0" id="logo" /></a>
-  </h1>
 
+<!--  Logo  -->
+<h1 id="logoheader">
+  <a accesskey="1" href="." id="logolink">
+      <img src="@@file/images/python-logo.gif"
+          alt="homepage" border="0" id="logo" /></a>
+</h1>
+
+<!-- Top Navbar -->
 <div id="utility-menu">
-<!-- Search Box -->
 <div id="searchbox">
     <form name="searchform" method="get" action="issue" id="searchform">
       <div id="search">
@@ -61,215 +63,252 @@ status_all string:-1,1,2,3;
 </div>
 
 
+<!-- Left Hand Navigation -->
 <div id="left-hand-navigation">
-<!--  Main Menu NEED LEVEL TWO HEADER AND FOOTER -->
+<!--  Main Menu - upper left -->
 <div id="menu">
   <ul class="level-one">
     <li><a href="." title="Home">Home</a></li>
-    <li><a href="https://www.python.org/" title="Go to the Python Site">Python Site</a></li>
+    <li><a href="https://github.com/python/cpython/pulls" title="Pull Requests">Pull Requests</a></li>
+    <li><a href="https://github.com/python/cpython" title="Source Code">Source Code</a></li>
     <li><a href="https://www.python.org/doc/" title="">Documentation</a></li>
     <li><a href="https://devguide.python.org/" title="Python Developer’s Guide">Developer’s Guide</a></li>
-    <li><a href="https://github.com/python/cpython" title="Source Code">Source Code</a></li>
-    <li><a href="https://www.python.org/downloads/" title="">Downloads</a></li>
-    <li class="selected"><a href="." class="selected" title="Python Issue Tracker">Issue Tracker</a></li>
-    <li><a href="https://github.com/python/cpython/pulls" title="Python Issue Tracker">Pull Requests</a>
-      <ul class="level-two">
-        <li tal:condition="python:request.user.hasPermission('View', 'issue')">
-          <strong i18n:translate="">Issues</strong>
-          <ul class="level-three">
-            <li tal:condition="python:request.user.hasPermission('Create', 'issue')">
-              <a href="issue?@template=item" i18n:translate="">Create New</a>
-            </li>
-            <li><a href="issue?@template=search&amp;status=1" i18n:translate="">Search</a></li>
-            <li><a href="issue?@action=random">Random Issue</a></li>
-            <li>
-              <form method="post" tal:attributes="action string:${request/env/PATH_INFO}">
-                <input type="submit" class="form-small" value="Show issue:" i18n:attributes="value"/>
-                <input class="form-small" size="4" type="text" name="@number"/>
-                <input type="hidden" name="@type" value="issue"/>
-                <input type="hidden" name="@action" value="show"/>
-              </form>
-            </li>
-          </ul>
+    <li><a href="https://www.python.org/dev/peps/" title="PEPs">PEPs</a></li>
+    <li><a href="https://buildbot.python.org/all/#/" title="Buildbot">Buildbot</a>
+
+  <!--- Submenu Topics-->
+  <ul class="level-two">
+
+    <!--- Issues submenu-->
+    <li tal:condition="python:request.user.hasPermission('View', 'issue')">
+      <strong i18n:translate="">Issues</strong>
+      <ul class="level-three">
+        <li tal:condition="python:request.user.hasPermission('Create', 'issue')">
+          <a href="issue?@template=item" i18n:translate="">Create New</a>
         </li>
-
-
-        <li tal:condition="python:request.user.hasPermission('View', 'issue')">
-          <strong i18n:translate="">Summaries</strong>
-          <ul class="level-three">
-            <li tal:condition="python:request.user.username != 'anonymous'">
-              <a href="#"
-                tal:attributes="href python:request.indexargs_url('issue', {
-                  '@sort': '-activity',
-                  '@group': 'status',
-                  '@filter': 'creator',
-                  '@columns': 'id,activity,title,status',
-                  '@search_text': '',
-                  'creator': request.user.id,
-                  '@dispname': i18n.gettext('Created by you'),
-                  '@startwith': 0,
-                })"
-                i18n:translate="">Created by you</a>
-            </li>
-
-            <li tal:condition="python:request.user.username != 'anonymous'">
-              <a href="#"
-                tal:attributes="href python:request.indexargs_url('issue', {
-                  '@sort': '-activity',
-                  '@group': 'status',
-                  '@filter': 'nosy',
-                  '@columns': 'id,activity,title,status,creator',
-                  '@search_text': '',
-                  'nosy': request.user.id,
-                  '@dispname': i18n.gettext('Followed by you'),
-                  '@startwith': 0,
-                })"
-                i18n:translate="">Followed by you</a>
-            </li>
-
-            <li tal:condition="python:request.user.username != 'anonymous' and
-                          request.user.hasRole('Developer')">
-              <a href="#"
-                tal:attributes="href python:request.indexargs_url('issue', {
-                  '@sort': '-activity',
-                  '@group': 'status',
-                  '@filter': 'assignee',
-                  '@columns': 'id,activity,title,creator,status',
-                  '@search_text': '',
-                  'assignee': request.user.id,
-                  '@dispname': i18n.gettext('Assigned to you'),
-                  '@startwith': 0,
-                })"
-                i18n:translate="">Assigned to you</a>
-            </li>
-
-            <li>
-              <a href="#"
-                tal:attributes="href python:request.indexargs_url('issue', {
-                  '@action': 'search',
-                  '@sort': '-activity',
-                  '@group': 'priority',
-                  '@filter': '',
-                  '@columns': columns,
-                  'keywords': 2,
-                  'status': 1,
-                  '@dispname': i18n.gettext('Issues with patch'),
-                  '@startwith': 0,
-                })"
-                i18n:translate="">Issues with patch</a>
-            </li>
-
-            <li>
-              <a href="#"
-                tal:attributes="href python:request.indexargs_url('issue', {
-                  '@sort': '-activity',
-                  '@group': 'priority',
-                  '@columns': columns,
-                  '@action': 'search',
-                  '@filter': '',
-                  'keywords': 6,
-                  'status': 1,
-                  '@dispname': i18n.gettext('Easy issues'),
-                  '@startwith': 0,
-                })"
-                i18n:translate="">Easy issues</a>
-            </li>
-
-            <li>
-              <a href="issue?@template=stats">Stats</a>
-            </li>
-
-          </ul>
-        </li>
-
-
-        <li tal:condition="python:request.user.username=='anonymous'">
-          <strong i18n:translate="">User</strong>
+        <li><a href="issue?@template=search&amp;status=1" i18n:translate="">Search</a></li>
+        <li><a href="issue?@action=random">Random Issue</a></li>
+        <li>
           <form method="post" tal:attributes="action string:${request/env/PATH_INFO}">
-          <ul class="level-three">
-            <li>
-                <tal:span i18n:translate="">Login</tal:span>&nbsp;(OpenID&nbsp;possible)<br />
-                 <a style="display:inline;width:0;margin:0" href="index?@action=oic_login&provider=Google">
-	            <img hspace="0" vspace="0" width="16"
-                       height="16"
-                       src="https://www.google.com/favicon.ico"
-                       alt="Google" title="Google" /></a>
-	         <a style="display:inline;width:0;margin:0" tal:repeat="prov python:utils.openid_links(request)" tal:attributes="href prov/href">
-                  <img hspace="0" vspace="0" width="16" height="16" tal:attributes="src prov/src;title prov/title;alt prov/alt"/></a>
-                <input size="10" name="openid_identifier" style="background:url(@@file/images/openid-16x16.gif)
-                  center left no-repeat;padding-left:16px"/><br/>
-                <input size="10" type="password" name="__login_password"/><br/>
-                <input type="hidden" name="@action" value="Login"/>
-                <input type="checkbox" name="remember" id="remember"/>
-                <label for="remember" i18n:translate="">Remember me?</label><br/>
-                <input class="form-small" type="submit" value="Login" i18n:attributes="value"/><br/>
-                <input type="hidden" name="__came_from"
-                    tal:condition="exists:request/env/QUERY_STRING"
-                    tal:attributes="value string:${request/base}${request/env/PATH_INFO}?${request/env/QUERY_STRING}">
-                <input type="hidden" name="__came_from"
-                    tal:condition="not:exists:request/env/QUERY_STRING"
-                    tal:attributes="value string:${request/base}${request/env/PATH_INFO}">
-                <span tal:replace="structure request/indexargs_form" />
-            </li>
-            <li>
-                <a href="user?@template=register" tal:condition="python:request.user.hasPermission('Register', 'user')"
-                  i18n:translate="">Register</a>
-            </li>
-            <li><a href="user?@template=forgotten" i18n:translate="">Lost&nbsp;your&nbsp;login?</a></li>
-          </ul>
+            <input type="submit" class="form-small" value="Show issue:" i18n:attributes="value"/>
+            <input class="form-small" size="4" type="text" name="@number"/>
+            <input type="hidden" name="@type" value="issue"/>
+            <input type="hidden" name="@action" value="show"/>
           </form>
         </li>
-
-        <li tal:condition="python:request.user.username != 'anonymous'">
-          <strong i18n:translate="">Hello, <span i18n:name="user" tal:replace="request/user/username">username</span></strong>
-          <ul class="level-three">
-            <li><a tal:attributes="href string:user${request/user/id}" i18n:translate="">Your Details</a></li>
-            <li><a tal:attributes="href python:request.indexargs_url('', {'@action':'logout'})" i18n:translate="">Logout</a></li>
-          </ul>
-        </li>
-
-        <li tal:condition="python:request.user.hasPermission('View', 'query')">
-          <span i18n:translate=""><strong>Your Queries</strong> (<a class="nomargin" href="query?@template=edit">edit</a>)</span>
-          <ul class="level-three" tal:repeat="qs request/user/queries">
-            <li><a tal:attributes="href string:${qs/klass}?${qs/url}&@dispname=${qs/name}" tal:content="qs/name">link</a></li>
-          </ul>
-        </li>
-
-        <li tal:condition="python:request.user.hasPermission('View', 'user')">
-          <strong i18n:translate="">Administration</strong>
-          <ul class="level-three">
-            <li tal:condition="python:request.user.hasPermission('Edit', None)">
-                <a href="home?@template=classlist" i18n:translate="">Class List</a></li>
-            <li tal:condition="python:request.user.hasPermission('View', 'user') or request.user.hasPermission('Edit', 'user')">
-                <a href="user?@sort=username"  i18n:translate="">User List</a></li>
-            <li tal:condition="python:request.user.hasPermission('View', 'user') or request.user.hasPermission('Edit', 'user')">
-                <a href="user?iscommitter=1&@action=search&@sort=username&@pagesize=300">Committer List</a></li>
-            <li tal:condition="python:request.user.hasPermission('Create', 'user')">
-                <a href="user?@template=item" i18n:translate="">Add User</a></li>
-            <li tal:condition="python:request.user.hasPermission('Edit', 'keyword')">
-                <a href="keyword" i18n:translate="">Edit Keywords</a></li>
-            <li tal:condition="python:request.user.hasPermission('SB: May Classify',None)">
-                <a href="msg?@sort=-spambayes_score">View Spam</a></li>
-          </ul>
-        </li>
-
-        <li>
-          <strong i18n:translate="">Help</strong>
-          <ul class="level-three">
-            <li><a href="http://docs.python.org/devguide/triaging.html">
-                Triaging</a></li>
-            <li><a href="http://wiki.python.org/moin/TrackerDevelopment">
-                Tracker Development</a></li>
-            <li><a href="http://psf.upfronthosting.co.za/roundup/meta">
-                Report Tracker Problem</a></li>
-          </ul>
-        </li>
-
       </ul>
     </li>
+
+    <!--- User Login submenu-->
+    <li tal:condition="python:request.user.username=='anonymous'">
+      <strong i18n:translate="">Log in</strong>
+      <form method="post" tal:attributes="action string:${request/env/PATH_INFO}">
+      <ul class="level-three">
+        
+        <li>
+        <tal:span i18n:translate="">OpenID&nbsp;supported</tal:span><br />
+        <a style="display:inline;width:0;margin:0" href="index?@action=oic_login&provider=GitHub">
+            <img hspace="0" vspace="0" width="16"
+                      height="16"
+                      src="https://www.github.com/favicon.ico"
+                      alt="GitHub" title="GitHub" /></a>
+        <a style="display:inline;width:0;margin:0" href="index?@action=oic_login&provider=Google">
+          <img hspace="0" vspace="0" width="16"
+                    height="16"
+                    src="https://www.google.com/favicon.ico"
+                    alt="Google" title="Google" /></a>
+        <a style="display:inline;width:0;margin:0" tal:repeat="prov python:utils.openid_links(request)" tal:attributes="href prov/href">
+            <img hspace="0" vspace="0" width="16" height="16" tal:attributes="src prov/src;title prov/title;alt prov/alt"/></a>
+            <input size="10" name="openid_identifier" style="background:url(@@file/images/openid-16x16.gif)
+              center left no-repeat;padding-left:16px"/><br/>
+            <input size="10" type="password" name="__login_password"/><br/>
+            <input type="hidden" name="@action" value="Login"/>
+            <input type="checkbox" name="remember" id="remember"/>
+            <label for="remember" i18n:translate="">Remember me?</label><br/>
+
+            <input class="form-small" type="submit" value="Login" i18n:attributes="value"/><br/>
+            <input type="hidden" name="__came_from"
+                tal:condition="exists:request/env/QUERY_STRING"
+                tal:attributes="value string:${request/base}${request/env/PATH_INFO}?${request/env/QUERY_STRING}">
+            <input type="hidden" name="__came_from"
+                tal:condition="not:exists:request/env/QUERY_STRING"
+                tal:attributes="value string:${request/base}${request/env/PATH_INFO}">
+            <span tal:replace="structure request/indexargs_form" />
+        </li>
+        <li><a href="user?@template=forgotten" i18n:translate="">Lost&nbsp;your&nbsp;login?</a></li>
+        <li>
+            <a href="user?@template=register" tal:condition="python:request.user.hasPermission('Register', 'user')"
+              i18n:translate="">Register</a>
+        </li>
+      </ul>
+      </form>
+    </li>
+
+    <li tal:condition="python:request.user.username != 'anonymous'">
+      <strong i18n:translate="">Hello, <span i18n:name="user" tal:replace="request/user/username">username</span></strong>
+      <ul class="level-three">
+        <li><a tal:attributes="href string:user${request/user/id}" i18n:translate="">Your Details</a></li>
+        <li><a tal:attributes="href python:request.indexargs_url('', {'@action':'logout'})" i18n:translate="">Logout</a></li>
+      </ul>
+    </li>
+
+    <li tal:condition="python:request.user.hasPermission('View', 'query')">
+      <span i18n:translate=""><strong>Your Queries</strong> (<a class="nomargin" href="query?@template=edit">edit</a>)</span>
+      <ul class="level-three" tal:repeat="qs request/user/queries">
+        <li><a tal:attributes="href string:${qs/klass}?${qs/url}&@dispname=${qs/name}" tal:content="qs/name">link</a></li>
+      </ul>
+    </li>
+
+    <!--- Summaries submenu -->
+    <li tal:condition="python:request.user.hasPermission('View', 'issue')">
+        <strong i18n:translate="">Summaries</strong>
+        <ul class="level-three">
+          <li tal:condition="python:request.user.username != 'anonymous'">
+            <a href="#"
+              tal:attributes="href python:request.indexargs_url('issue', {
+                '@sort': '-activity',
+                '@group': 'status',
+                '@filter': 'creator',
+                '@columns': 'id,activity,title,status',
+                '@search_text': '',
+                'creator': request.user.id,
+                '@dispname': i18n.gettext('Created by you'),
+                '@startwith': 0,
+              })"
+              i18n:translate="">Created by you</a>
+          </li>
+  
+          <li tal:condition="python:request.user.username != 'anonymous'">
+            <a href="#"
+              tal:attributes="href python:request.indexargs_url('issue', {
+                '@sort': '-activity',
+                '@group': 'status',
+                '@filter': 'nosy',
+                '@columns': 'id,activity,title,status,creator',
+                '@search_text': '',
+                'nosy': request.user.id,
+                '@dispname': i18n.gettext('Followed by you'),
+                '@startwith': 0,
+              })"
+              i18n:translate="">Followed by you</a>
+          </li>
+  
+          <li tal:condition="python:request.user.username != 'anonymous' and
+                        request.user.hasRole('Developer')">
+            <a href="#"
+              tal:attributes="href python:request.indexargs_url('issue', {
+                '@sort': '-activity',
+                '@group': 'status',
+                '@filter': 'assignee',
+                '@columns': 'id,activity,title,creator,status',
+                '@search_text': '',
+                'assignee': request.user.id,
+                '@dispname': i18n.gettext('Assigned to you'),
+                '@startwith': 0,
+              })"
+              i18n:translate="">Assigned to you</a>
+          </li>
+  
+          <li>
+            <a href="#"
+              tal:attributes="href python:request.indexargs_url('issue', {
+                '@action': 'search',
+                '@sort': '-activity',
+                '@group': 'priority',
+                '@filter': '',
+                '@columns': columns,
+                'keywords': 2,
+                'status': 1,
+                '@dispname': i18n.gettext('Issues with patch'),
+                '@startwith': 0,
+              })"
+              i18n:translate="">Issues with patch</a>
+          </li>
+  
+          <li>
+            <a href="#"
+              tal:attributes="href python:request.indexargs_url('issue', {
+                '@sort': '-activity',
+                '@group': 'priority',
+                '@columns': columns,
+                '@action': 'search',
+                '@filter': '',
+                'keywords': 6,
+                'status': 1,
+                '@dispname': i18n.gettext('Easy issues'),
+                '@startwith': 0,
+              })"
+              i18n:translate="">Easy issues</a>
+          </li>
+  
+              <li>
+                <a href="issue?@template=stats">Weekly Statistics</a>
+              </li>
+  
+            </ul>
+      </li>
+    <!-- Administration submenu -->
+    <li tal:condition="python:request.user.hasPermission('View', 'user')">
+      <strong i18n:translate="">Administration</strong>
+      <ul class="level-three">
+        <li tal:condition="python:request.user.hasPermission('Edit', None)">
+            <a href="home?@template=classlist" i18n:translate="">Class List</a></li>
+        <li tal:condition="python:request.user.hasPermission('View', 'user') or request.user.hasPermission('Edit', 'user')">
+            <a href="user?@sort=username"  i18n:translate="">User List</a></li>
+        <li tal:condition="python:request.user.hasPermission('View', 'user') or request.user.hasPermission('Edit', 'user')">
+            <a href="user?iscommitter=1&@action=search&@sort=username&@pagesize=300">Committer List</a></li>
+        <li tal:condition="python:request.user.hasPermission('Create', 'user')">
+            <a href="user?@template=item" i18n:translate="">Add User</a></li>
+        <li tal:condition="python:request.user.hasPermission('Edit', 'keyword')">
+            <a href="keyword" i18n:translate="">Edit Keywords</a></li>
+        <li tal:condition="python:request.user.hasPermission('SB: May Classify',None)">
+            <a href="msg?@sort=-spambayes_score">View Spam</a></li>
+      </ul>
+    </li>
+
+    <!--- Contribute submenu-->
+    <li>
+        <strong i18n:translate="">Contribute</strong>
+        <ul class="level-three">
+          <li><a href="http://docs.python.org/devguide/triaging.html">
+              Triaging Issues</a></li>
+          <li><a href="http://wiki.python.org/moin/TrackerDevelopment">
+              Tracker Development</a></li>
+          <li><a href="http://psf.upfronthosting.co.za/roundup/meta">
+              Report Tracker Bug</a></li>
+        </ul>
+      </li>
+
+    <!-- Resources submenu-->
+    <li>
+        <strong i18n:translate="">Help</strong>
+        <ul class="level-three">
+          <li><a href="http://docs.python.org/devguide">
+            Developer Guide</a></li>
+          <li><a href="https://docs.python.org">
+            Documentation</a></li>
+          <li><a href="https://www.python.org/downloads/" title="">Downloads</a>
+        </ul>
+    </li>
+
+    <!-- Community submenu -->
+    <li>
+      <strong i18n:translate="">Community</strong>
+      <ul class="level-three">
+        <li><a href="http://python.org">
+            python.org</a></li>
+        <li><a href="https://www.python.org/psf-landing/">
+            PSF</a></li>
+        <li><a href="http://psf.upfronthosting.co.za/roundup/meta">
+            Become a member</a></li>
+        <li><a href="https://www.python.org/psf/codeofconduct/">
+            Code of Conduct</a></li>            
+      </ul>
+    </li>
+
   </ul>
-</div> <!-- menu -->
-</div> <!-- left-hand-navigation -->
+</div> 
+</div>
 
 <div id="content-body">
 <div id="body-main">
@@ -294,6 +333,61 @@ status_all string:-1,1,2,3;
 </div> <!-- credits -->
 Copyright &copy; 1990-2019, <a href="http://python.org/psf">Python Software Foundation</a><br />
 <a href="http://python.org/about/legal">Legal Statements</a>
+
+<footer class="footer">
+    <div class="footer__menus">
+      <div class="footer__menu">
+        <h2>Help</h2>
+        <nav aria-label="Help navigation">
+          <ul>
+            <li><a href="https://packaging.python.org/installing/" title="External link" target="_blank" rel="noopener">Installing packages</a></li>
+            <li><a href="https://packaging.python.org/tutorials/packaging-projects/" title="External link" target="_blank" rel="noopener">Uploading packages</a></li>
+            <li><a href="https://packaging.python.org/" title="External link" target="_blank" rel="noopener">User guide</a></li>
+            <li><a href="{{ request.route_path('help')}}">FAQs</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="footer__menu">
+        <h2>About PyPI</h2>
+        <nav aria-label="About PyPI navigation">
+          <ul>
+            <li><a href="https://twitter.com/PyPI" title="External link" target="_blank" rel="noopener">PyPI on Twitter</a></li>
+            <li><a href="https://dtdg.co/pypi" title="External link" target="_blank" rel="noopener">Infrastructure dashboard</a></li>
+            <li><a href="https://www.python.org/dev/peps/pep-0541/" title="External link" target="_blank" rel="noopener">Package index name retention</a></li>
+            <li><a href="{{ request.route_path('sponsors') }}">Our sponsors</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="footer__menu">
+        <h2>Contribute</h2>
+        <nav aria-label="How to contribute navigation">
+          <ul>
+            <li><a href="{{ request.route_path('help')}}#feedback">Developer's Guide</a></li>
+            <li><a href="https://github.com/pypa/warehouse" title="External link" target="_blank" rel="noopener">Contribute on GitHub</a></li>
+            <li><a href="https://github.com/pypa/warehouse/graphs/contributors" title="External link" target="_blank" rel="noopener">Development credits</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="footer__menu">
+        <h2>Community</h2>
+        <nav aria-label="Using PyPI navigation">
+          <ul>
+            <li><a href="https://www.pypa.io/en/latest/code-of-conduct/" title="External link" target="_blank" rel="noopener">Code of conduct</a></li>
+            <li><a href="{{ request.route_path('security') }}">Report security issue</a></li>
+            <li><a href="https://www.python.org/privacy/" title="External link" target="_blank" rel="noopener">Privacy policy</a></li>
+            <li><a href="{{ request.route_path('policy.terms-of-use') }}">Terms of use</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <hr class="footer__divider">
+
+
+
 </div> <!-- footer -->
 </div> <!-- body-main -->
 </div> <!-- content -->
